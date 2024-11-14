@@ -1,18 +1,20 @@
 name: Build and Publish to GHCR
 
 on:
-  push:
-    tags:
-      - 'v*.*.*'  # Trigger on version tags like v1.0.0
-  workflow_dispatch:  # Allows manual runs
+  schedule:
+    - cron: '0 0 * * *'  # Run daily or at another desired frequency
+  workflow_dispatch:  # Allows manual triggering
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout original repository
         uses: actions/checkout@v3
+        with:
+          repository: mspgeek-community/matterbridge
+          ref: main
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v2
@@ -21,7 +23,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push Docker image
+      - name: Build and push Docker image to GHCR
         uses: docker/build-push-action@v5
         with:
           context: .
