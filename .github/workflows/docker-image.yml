@@ -2,7 +2,7 @@ name: Build and Publish to GHCR
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Run daily or at another desired frequency
+    - cron: '0 0 * * 0'  # Sunday
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
